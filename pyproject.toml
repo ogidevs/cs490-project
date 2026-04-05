@@ -1,0 +1,32 @@
+[project]
+name = "cs490"
+version = "0.1.0"
+description = "Serbian real estate prediction project for CS490"
+authors = [
+    { name = "Ognjen", email = "ognjen.milosevic.5375@metropolitan.ac.rs" }
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "joblib>=1.5.3",
+    "jupyterlab>=4.5.6",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.3",
+    "pandas>=3.0.1",
+    "requests>=2.32.5",
+    "scikit-learn>=1.8.0",
+    "seaborn>=0.13.2",
+    "streamlit>=1.19.0",
+    "altair<5",
+    "standard-imghdr>=3.13.0",
+    "xgboost>=3.2.0",
+    "lightgbm>=4.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.8",
+    "tox>=4.51.0",
+    "tox-uv>=1.33.4",
+]
