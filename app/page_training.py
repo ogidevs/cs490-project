@@ -4,7 +4,7 @@ import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from src.model_config import MODEL_CLASSES
+from src.config import MODEL_CLASSES
 from src.train_model import train_and_evaluate
 from app.ui_utils import render_dynamic_hyperparameters
 

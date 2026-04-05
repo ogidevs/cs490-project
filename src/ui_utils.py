@@ -5,7 +5,7 @@ import sys
 
 # Ensure src modules can be imported
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from src.model_config import HYPERPARAM_CONFIG
+from src.config import HYPERPARAM_CONFIG
 
 
 def get_available_datasets():
