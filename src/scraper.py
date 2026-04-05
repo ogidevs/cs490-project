@@ -36,6 +36,7 @@ def parse_single_ad(ad):
         return None
 
     total_price, area, rooms = None, None, None
+    current_floor, total_floors = None, None
     city, municipality, neighborhood = "Unknown", "Unknown", "Unknown"
 
     central_feature = ad.find("div", class_="central-feature")
@@ -69,6 +70,27 @@ def parse_single_ad(ad):
                     area = clean_numeric_value(val_text)
                 elif "soba" in legend_text:
                     rooms = val_text
+                elif "spratnost" in legend_text:
+                    # Logika za spratnost (npr. "3 / 5" ili "Prizemlje")
+                    if "/" in val_text:
+                        floor_parts = val_text.split("/")
+                        current_floor = floor_parts[0].strip()
+                        total_floors = floor_parts[1].strip()
+                    else:
+                        current_floor = val_text.strip()
+
+    advertiser = "Unknown"
+    adv_span = ad.find("span", {"data-field-name": "oglasivac_nekretnine_s"})
+    if adv_span and "data-field-value" in adv_span.attrs:
+        advertiser = adv_span["data-field-value"].capitalize()
+
+    # 5. Broj fotografija
+    photo_count = 0
+    img_span = ad.find("span", class_="pi-img-count-num")
+    if img_span:
+        match = re.search(r"\d+", img_span.text)
+        if match:
+            photo_count = int(match.group(0))
 
     return {
         "ID": ad_id,
@@ -77,6 +99,10 @@ def parse_single_ad(ad):
         "Neighborhood": neighborhood,
         "Area": area,
         "Rooms": rooms,
+        "Current_Floor": current_floor,
+        "Total_Floors": total_floors,
+        "Advertiser_Type": advertiser,
+        "Photo_Count": photo_count,
         "Total_Price_EUR": total_price,
     }
 

@@ -13,7 +13,7 @@ from src.predict import predict_value
 
 def render_prediction_page(active_dataset_filename, active_data_path):
     """Renders a clean, user-friendly prediction dashboard with market comparison visualizations."""
-    st.header("🔮 Property Valuation Dashboard")
+    st.header("Property Valuation Dashboard")
     st.write(
         "Input property details to generate a valuation and see how it compares to the local market."
     )
@@ -74,7 +74,7 @@ def render_prediction_page(active_dataset_filename, active_data_path):
         if isinstance(result, str):
             st.error(f"Prediction Failed: {result}")
             st.info(
-                "💡 Did you remember to retrain your model in the 'Model Training' tab after updating features?"
+                "Did you remember to retrain your model in the 'Model Training' tab after updating features?"
             )
             return
 
