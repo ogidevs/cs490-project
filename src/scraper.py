@@ -29,7 +29,23 @@ def clean_numeric_value(text):
     return None
 
 
-def parse_single_ad(ad):
+def parse_area_value(val_text, property_type):
+    """Parses area and normalizes non-flat units such as land ar to square meters."""
+    if not val_text:
+        return None
+
+    area_value = clean_numeric_value(val_text)
+    if area_value is None:
+        return None
+
+    normalized = val_text.lower()
+    if property_type == "land" and "ari" in normalized:
+        return area_value * 100.0
+
+    return area_value
+
+
+def parse_single_ad(ad, property_type="flat"):
     """Extracts required data fields from a single property HTML element."""
     ad_id = ad.get("data-id")
     if not ad_id:
@@ -38,6 +54,13 @@ def parse_single_ad(ad):
     total_price, area, rooms = None, None, None
     current_floor, total_floors = None, None
     city, municipality, neighborhood = "Unknown", "Unknown", "Unknown"
+    subtype_defaults = {
+        "flat": "Stan",
+        "house": "Kuća",
+        "land": "Zemljište",
+        "garage": "Garaža",
+    }
+    property_subtype = subtype_defaults.get(property_type, "Unknown")
 
     central_feature = ad.find("div", class_="central-feature")
     if central_feature:
@@ -67,9 +90,11 @@ def parse_single_ad(ad):
                 val_text = val.text.strip().replace("\xa0", " ")
 
                 if "kvadratura" in legend_text or "površina" in legend_text:
-                    area = clean_numeric_value(val_text)
+                    area = parse_area_value(val_text, property_type)
                 elif "soba" in legend_text:
                     rooms = val_text
+                elif "tip nekretnine" in legend_text:
+                    property_subtype = val_text.strip()
                 elif "spratnost" in legend_text:
                     # Logika za spratnost (npr. "3 / 5" ili "Prizemlje")
                     if "/" in val_text:
@@ -97,6 +122,8 @@ def parse_single_ad(ad):
         "City": city,
         "Municipality": municipality,
         "Neighborhood": neighborhood,
+        "Property_Type": property_type,
+        "Property_Subtype": property_subtype,
         "Area": area,
         "Rooms": rooms,
         "Current_Floor": current_floor,
@@ -107,7 +134,7 @@ def parse_single_ad(ad):
     }
 
 
-def scrape_page(url, headers):
+def scrape_page(url, headers, property_type="flat"):
     """Executes an HTTP GET request to a target URL and parses the HTML."""
     parsed_ads = []
     try:
@@ -116,7 +143,7 @@ def scrape_page(url, headers):
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
             for ad in soup.find_all("div", class_="product-item"):
-                parsed = parse_single_ad(ad)
+                parsed = parse_single_ad(ad, property_type=property_type)
                 if parsed:
                     parsed_ads.append(parsed)
     except Exception:
@@ -171,7 +198,7 @@ def scrape_halooglasi(
     completed_urls = 0
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {executor.submit(scrape_page, url, headers): url for url in urls}
+        futures = {executor.submit(scrape_page, url, headers, property_type): url for url in urls}
         for future in as_completed(futures):
             try:
                 for ad in future.result():

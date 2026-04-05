@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-This project analyzes the real estate market and predicts property prices based on features such as area, number of rooms, municipality, and more. It leverages machine learning algorithms and web scraping to dynamically gather data.
+This project analyzes the real estate market and predicts property prices based on features such as area, rooms, floor position, advertiser type, photo count, municipality, and neighborhood. It leverages machine learning algorithms and web scraping to dynamically gather data.
 
 ## Dataset
 
-The dataset is collected via web scraping from public real estate listings (e.g., HaloOglasi). It includes features like total price, price per square meter, area, municipality, floor level, and number of rooms.
+The dataset is collected via web scraping from public real estate listings (e.g., HaloOglasi). It includes features like total price, price per square meter, area, municipality, neighborhood, floor level, number of rooms, advertiser type, and photo count.
 
 ## Setup Instructions
 
@@ -36,14 +36,14 @@ uv run jupyter lab
 
 1. Phase 1: Data scraping module development (Target: >1000 real estate ads).
 2. Phase 2: Exploratory Data Analysis (EDA) and cleaning of outliers/missing data.
-3. Phase 3: Feature engineering (Categorical encoding, numerical scaling).
-4. Phase 4: Model development (Linear Regression, Random Forest, Gradient Boosting) and evaluation.
+3. Phase 3: Feature engineering (floor ratios, room density, advertiser signals, categorical encoding, numerical scaling).
+4. Phase 4: Model development (Linear Regression, Random Forest, Gradient Boosting, XGBoost, LightGBM) and evaluation.
 5. Phase 5: Streamlit Application development for dynamic prediction and visualization.
 
 - **Data Collection:** Web scraping of real estate listings.
 - **Exploratory Data Analysis (EDA):** Statistical analysis and data visualization.
-- **Feature Engineering:** Cleaning missing values, converting string categories to numerical, and One-Hot Encoding.
-- **Model Training:** Implementation of Linear Regression, Random Forest, and Gradient Boosting.
+- **Feature Engineering:** Cleaning missing values, converting string categories to numerical, and adding floor, room-density, and listing-quality signals.
+- **Model Training:** Implementation of Linear Regression, Random Forest, Gradient Boosting, XGBoost, and LightGBM.
 - **Deployment:** Building a Streamlit application for user interaction.
 
 ## Functional Requirements
@@ -55,7 +55,7 @@ uv run jupyter lab
 - Provide a user-friendly UI (Streamlit) to input property attributes and receive a price prediction.
 
 - The system must scrape up-to-date listings based on user-selected cities.
-- The system must clean the scraped data and handle outliers/missing values.
+- The system must clean the scraped data, handle outliers/missing values, and engineer reusable features for prediction.
 - The system must provide interactive visualizations of the dataset.
 - The system must train ML models and allow the user to predict the price of a property based on manual inputs.
 

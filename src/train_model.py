@@ -1,11 +1,12 @@
 import os
 import json
 import joblib
+from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.pipeline import Pipeline
 from src.preprocessing import load_and_clean_data, prepare_data_for_training, get_preprocessor
-from src.config import MODEL_CLASSES
+from src.config import MODEL_CLASSES, NUMERICAL_FEATURES, CATEGORICAL_FEATURES
 
 def train_and_evaluate(dataset_filename, selected_models, target_variable='Total_Price_EUR', model_params=None):
     """
@@ -40,7 +41,7 @@ def train_and_evaluate(dataset_filename, selected_models, target_variable='Total
             model = MODEL_CLASSES[name](**params)
             
             pipeline = Pipeline(steps=[
-                ('preprocessor', preprocessor), 
+                ('preprocessor', clone(preprocessor)), 
                 ('model', model)
             ])
             
@@ -76,7 +77,10 @@ def train_and_evaluate(dataset_filename, selected_models, target_variable='Total
                 
             meta[dataset_base]['models'][target_suffix] = {
                 "best_model": best_model_name,
-                "r2": round(best_score, 4)
+                "r2": round(best_score, 4),
+                "numerical_features": NUMERICAL_FEATURES,
+                "categorical_features": CATEGORICAL_FEATURES,
+                "target_column": target_variable
             }
             
             with open(meta_path, 'w', encoding='utf-8') as f:
