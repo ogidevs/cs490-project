@@ -109,7 +109,7 @@ def render_prediction_page(active_dataset_filename, active_data_path):
 
         # --- UI: Market Context Graph ---
         st.write("---")
-        st.subheader(f"📊 Market Distribution in {input_muni}")
+        st.subheader(f"Market Distribution in {input_muni}")
 
         if len(df_local) > 5:
             # We use Matplotlib/Seaborn to plot the local market and drop a line exactly where our prediction sits
