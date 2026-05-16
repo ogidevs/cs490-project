@@ -79,6 +79,3 @@ uv run tox -e tests
 
 For more info refer to `README.md` in tests/ dir.
 ```
-
-TODO:
-Extend the same engineered feature set to houses, land, and garages.

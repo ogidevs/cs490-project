@@ -155,38 +155,38 @@ class TestDataIntegrity:
 
         df = engineer_features(sample_dataset)
 
-        # Proveravamo inf vrednosti
+        # Check inf values in numeric columns
         numeric_cols = df.select_dtypes(include=[np.number]).columns
 
         for col in numeric_cols:
-            # Dozvoljavamo NaN, ali ne inf
+            # Check for NaN values
             assert not (df[col].isin([np.inf, -np.inf]).any()), (
-                f"Kolona {col} sadrži inf"
+                f"Column {col} contains inf"
             )
 
     def test_preprocessor_maintains_row_count(self, sample_dataset):
-        """Test da preprocessor čuva broj redova."""
+        """Test that the preprocessor maintains the row count."""
         from src.preprocessing import get_preprocessor
 
         preprocessor = get_preprocessor(sample_dataset)
         X_transformed = preprocessor.fit_transform(sample_dataset)
 
-        # Trebalo bi da bude isti broj redova
+        # Should have the same number of rows
         if isinstance(X_transformed, np.ndarray):
             assert X_transformed.shape[0] == len(sample_dataset)
         else:
             assert len(X_transformed) == len(sample_dataset)
 
     def test_categorical_features_properly_encoded(self, sample_dataset):
-        """Test da se kategorijske kolone pravilno kodiraju."""
+        """Test that categorical columns are properly encoded."""
         from src.preprocessing import get_preprocessor
 
         preprocessor = get_preprocessor(sample_dataset)
         X_transformed = preprocessor.fit_transform(sample_dataset)
 
-        # Rešenje bi trebalo da bude numeričko
+        # The result should be numeric
         assert isinstance(X_transformed, (np.ndarray, pd.DataFrame))
 
-        # Sve vrednosti trebalo bi da budu numeričke
+        # All values should be numeric
         if isinstance(X_transformed, pd.DataFrame):
             assert X_transformed.select_dtypes(include=[np.number]).shape[1] > 0

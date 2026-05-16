@@ -95,11 +95,25 @@ def train_and_evaluate(
             if "models" not in meta[dataset_base]:
                 meta[dataset_base]["models"] = {}
 
+            # Determine which features were used based on property type
+            num_features = NUMERICAL_FEATURES
+            cat_features = CATEGORICAL_FEATURES
+            property_type = "flat"  # default
+            
+            if "Property_Type" in X_train.columns and len(X_train) > 0:
+                from src.preprocessing import _normalize_text
+                from src.config import NUMERICAL_FEATURES_BY_TYPE, CATEGORICAL_FEATURES_BY_TYPE
+                property_type = _normalize_text(X_train["Property_Type"].iloc[0])
+                if property_type in NUMERICAL_FEATURES_BY_TYPE:
+                    num_features = NUMERICAL_FEATURES_BY_TYPE[property_type]
+                    cat_features = CATEGORICAL_FEATURES_BY_TYPE[property_type]
+
             meta[dataset_base]["models"][target_suffix] = {
                 "best_model": best_model_name,
                 "r2": round(best_score, 4),
-                "numerical_features": NUMERICAL_FEATURES,
-                "categorical_features": CATEGORICAL_FEATURES,
+                "property_type": property_type,
+                "numerical_features": num_features,
+                "categorical_features": cat_features,
                 "target_column": target_variable,
             }
 

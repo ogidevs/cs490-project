@@ -29,30 +29,90 @@ CITIES = {
 # --- FEATURE ENGINEERING CONFIGURATION ---
 # The model uses raw listing fields plus engineered signals that can be
 # reconstructed at prediction time from the same inputs.
-NUMERICAL_FEATURES = [
-    "Area",
-    "Rooms_Numeric",
-    "Current_Floor_Num",
-    "Total_Floors_Num",
-    "Floor_Ratio",
-    "Area_per_Room",
-    "Rooms_per_100sqm",
-    "Area_Log",
-    "Photo_Count",
-    "Photo_Count_Log",
-    "Is_Ground_Floor",
-    "Is_Top_Floor",
-    "Is_Agency",
-]
-CATEGORICAL_FEATURES = [
-    "City",
-    "Municipality",
-    "Neighborhood",
-    "Advertiser_Type",
-    "Property_Type",
-    "Property_Subtype",
-    "Floor_Category",
-]
+
+# Property-type-specific numerical features
+NUMERICAL_FEATURES_BY_TYPE = {
+    "flat": [  # Apartments with floor info
+        "Area",
+        "Rooms_Numeric",
+        "Current_Floor_Num",
+        "Total_Floors_Num",
+        "Floor_Ratio",
+        "Area_per_Room",
+        "Rooms_per_100sqm",
+        "Area_Log",
+        "Photo_Count",
+        "Photo_Count_Log",
+        "Is_Ground_Floor",
+        "Is_Top_Floor",
+        "Is_Agency",
+    ],
+    "house": [  # Houses with potential rooms but single building
+        "Area",
+        "Rooms_Numeric",
+        "Area_per_Room",
+        "Rooms_per_100sqm",
+        "Area_Log",
+        "Photo_Count",
+        "Photo_Count_Log",
+        "Is_Agency",
+    ],
+    "land": [  # Land with only area-based features
+        "Area",
+        "Area_Log",
+        "Photo_Count",
+        "Photo_Count_Log",
+        "Is_Agency",
+    ],
+    "garage": [  # Garages with minimal features
+        "Area",
+        "Area_Log",
+        "Photo_Count",
+        "Photo_Count_Log",
+        "Is_Agency",
+    ],
+}
+
+# Categorical features (same for all property types)
+CATEGORICAL_FEATURES_BY_TYPE = {
+    "flat": [
+        "City",
+        "Municipality",
+        "Neighborhood",
+        "Advertiser_Type",
+        "Property_Type",
+        "Property_Subtype",
+        "Floor_Category",
+    ],
+    "house": [
+        "City",
+        "Municipality",
+        "Neighborhood",
+        "Advertiser_Type",
+        "Property_Type",
+        "Property_Subtype",
+    ],
+    "land": [
+        "City",
+        "Municipality",
+        "Neighborhood",
+        "Advertiser_Type",
+        "Property_Type",
+        "Property_Subtype",
+    ],
+    "garage": [
+        "City",
+        "Municipality",
+        "Neighborhood",
+        "Advertiser_Type",
+        "Property_Type",
+        "Property_Subtype",
+    ],
+}
+
+# Default features (for backward compatibility when property type is unknown)
+NUMERICAL_FEATURES = NUMERICAL_FEATURES_BY_TYPE["flat"]
+CATEGORICAL_FEATURES = CATEGORICAL_FEATURES_BY_TYPE["flat"]
 
 # --- MODEL REGISTRY ---
 MODEL_CLASSES = {

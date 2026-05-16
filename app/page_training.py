@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import sys
 import os
+import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.config import MODEL_CLASSES
@@ -14,6 +15,31 @@ def render_training_page(active_dataset_filename):
     st.header("Train Machine Learning Models")
 
     if active_dataset_filename:
+        # Display dataset metadata info (property type, cities, etc.)
+        dataset_base = active_dataset_filename.replace(".csv", "")
+        meta_path = os.path.join("data", "metadata.json")
+        
+        dataset_property_type = "flat"
+        dataset_cities = []
+        dataset_records = 0
+        
+        if os.path.exists(meta_path):
+            with open(meta_path, "r", encoding="utf-8") as f:
+                metadata = json.load(f)
+            dataset_info = metadata.get(dataset_base, {})
+            dataset_property_type = dataset_info.get("property_type", "flat")
+            dataset_cities = dataset_info.get("cities", [])
+            dataset_records = dataset_info.get("records", 0)
+        
+        # Display info banner
+        col_info1, col_info2, col_info3 = st.columns(3)
+        with col_info1:
+            st.metric("Property Type", dataset_property_type.capitalize())
+        with col_info2:
+            st.metric("Cities", len(dataset_cities))
+        with col_info3:
+            st.metric("Records", f"{dataset_records:,}")
+
         col1, col2 = st.columns(2)
         with col1:
             target_var = st.selectbox(
@@ -69,6 +95,9 @@ def render_training_page(active_dataset_filename):
 
                         html_table = res_df.to_html(index=False)
                         st.markdown(html_table, unsafe_allow_html=True)
+                        
+                        # Show property type used for training
+                        st.info(f"✓ Models trained using **{dataset_property_type}**-specific features from {len(dataset_cities)} cities")
 
                     except Exception as e:
                         st.error(f"Training error: {e}")

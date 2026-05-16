@@ -104,16 +104,56 @@ Tests cover the following key functionalities:
 - Preprocessing preserves row count
 - Categorical columns properly encoded
 
+### 5. **Property Type Tests** (`test_property_types.py`)
+
+**Property-Type-Specific Feature Engineering**
+
+Tests verify that features are correctly tailored to each property type:
+
+- **Flats (13 features)**: All features including floor-based and room-based metrics
+  - Floor features: Floor_Ratio, Is_Ground_Floor, Is_Top_Floor, Floor_Category
+  - Room features: Area_per_Room, Rooms_per_100sqm
+  - Area features: Area_Log, Photo_Count_Log, Is_Agency
+
+- **Houses (8 features)**: Room-based features, no floor metrics
+  - Room features: Area_per_Room, Rooms_per_100sqm
+  - Area features: Area_Log, Photo_Count_Log, Is_Agency
+  - Floor features excluded (set to NaN)
+
+- **Land (5 features)**: Area-based features only
+  - Area features: Area_Log, Photo_Count_Log, Is_Agency
+  - Room and floor features excluded (set to NaN)
+
+- **Garages (5 features)**: Area-based features only
+  - Area features: Area_Log, Photo_Count_Log, Is_Agency
+  - Room and floor features excluded (set to NaN)
+
+**Configuration Consistency Tests**
+
+- NUMERICAL_FEATURES_BY_TYPE has all property types
+- CATEGORICAL_FEATURES_BY_TYPE has all property types
+- Feature counts validated per type
+- Floor_Category only in flat type
+- Backward compatibility with NUMERICAL_FEATURES and CATEGORICAL_FEATURES
+
+**Preprocessor Property-Type Detection**
+
+- Preprocessor detects property type from input data
+- Correct features selected based on detected type
+- Backward compatible when property type missing
+- Missing property type defaults to "flat"
+
 ## Test Structure
 
 ```
 tests/
-├── __init__.py                 # Initialization file
-├── conftest.py                 # Shared fixtures
-├── test_preprocessing.py       # Preprocessing tests
-├── test_training.py            # Model training tests
-├── test_prediction.py          # Prediction tests
-└── test_data_validation.py     # Data validation tests
+├── __init__.py                   # Initialization file
+├── conftest.py                   # Shared fixtures
+├── test_preprocessing.py         # Preprocessing tests (34 tests)
+├── test_training.py              # Model training tests (7 tests)
+├── test_prediction.py            # Prediction tests (6 tests)
+├── test_data_validation.py       # Data validation tests (10 tests)
+└── test_property_types.py        # Property-type-specific tests (18 tests)
 ```
 
 ## Fixtures
