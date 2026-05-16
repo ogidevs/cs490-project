@@ -51,7 +51,7 @@ if dataset_map:
         st.sidebar.markdown(f"**Cities:** {', '.join(dataset_info.get('cities', []))}")
         st.sidebar.markdown(f"**Records:** {dataset_info.get('records', 0)}")
         st.sidebar.markdown(
-            f"**Date:** {dataset_info.get('scraped_at', 'N/A').split()[0]}"
+            f"**Date:** {dataset_info.get('scraped_at', 'N/A')}"
         )
 
         st.sidebar.markdown("---")

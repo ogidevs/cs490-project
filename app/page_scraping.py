@@ -20,6 +20,31 @@ def render_scraping_page(active_dataset_filename, active_data_path):
         )
         pages_per_city = st.slider("Pages per city", 1, 500, 5)
 
+        with st.expander("Advanced (anti-bot)"):
+            cookie_header = st.text_area(
+                "Cookie header (optional)",
+                value="",
+                help=(
+                    "Paste Cookie header from browser DevTools request to HaloOglasi "
+                    "if requests are blocked by anti-bot protection."
+                ),
+            ).strip()
+            proxy_url = st.text_input(
+                "Proxy URL (optional)",
+                value="",
+                help="Format example: http://user:pass@host:port",
+            ).strip()
+            use_browser_fallback = st.checkbox(
+                "Use browser fallback on 403/anti-bot",
+                value=False,
+                help="Retry with Playwright only if curl_cffi requests are blocked.",
+            )
+            use_headless_browser = st.checkbox(
+                "Use headless browser fallback",
+                value=False,
+                help="Headed mode is usually more reliable against anti-bot, but opens browser windows.",
+            )
+
         if st.button("Start Scraping"):
             if not selected_cities:
                 st.error("Please select at least 1 city.")
@@ -40,6 +65,10 @@ def render_scraping_page(active_dataset_filename, active_data_path):
                         target_cities=selected_cities,
                         num_pages=pages_per_city,
                         progress_callback=update_progress,
+                        proxy_url=proxy_url or None,
+                        cookie_header=cookie_header or None,
+                        use_browser_fallback=use_browser_fallback,
+                        playwright_headless=use_headless_browser,
                     )
                     progress_bar.empty()
                     status_text.success(
@@ -53,10 +82,16 @@ def render_scraping_page(active_dataset_filename, active_data_path):
         st.subheader("Dataset Preview")
         if active_dataset_filename and os.path.exists(active_data_path):
             df = pd.read_csv(active_data_path)
-            st.info(
-                f"Scraped on: **{df['Scrape_Date'].iloc[0] if 'Scrape_Date' in df.columns else 'Unknown'}**"
-            )
+            scrape_date = "Unknown"
+            if "Scrape_Date" in df.columns and not df.empty:
+                scrape_date = df["Scrape_Date"].iloc[0]
+
+            st.info(f"Scraped on: **{scrape_date}**")
             st.write(f"Total properties: {len(df)}")
-            st.dataframe(df.astype(object).tail(10))
+
+            if df.empty:
+                st.warning("Selected dataset is empty. Run scraping again to collect records.")
+            else:
+                st.dataframe(df.astype(object).tail(10))
         else:
             st.warning("No dataset selected. Scrape data to begin.")
