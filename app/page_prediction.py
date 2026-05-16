@@ -1,6 +1,4 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import json
@@ -29,7 +27,9 @@ def render_prediction_page(active_dataset_filename, active_data_path):
     if os.path.exists(meta_path):
         with open(meta_path, "r", encoding="utf-8") as f:
             metadata = json.load(f)
-        dataset_property_type = metadata.get(dataset_base, {}).get("property_type", "flat")
+        dataset_property_type = metadata.get(dataset_base, {}).get(
+            "property_type", "flat"
+        )
 
     subtype_defaults = {
         "flat": "Stan",
@@ -57,18 +57,38 @@ def render_prediction_page(active_dataset_filename, active_data_path):
         input_city = st.selectbox("City", cities_list if cities_list else ["Unknown"])
 
         # Cascade logic: allow city-wide predictions or narrower location scope.
-        muni_filtered = df[df["City"] == input_city]["Municipality"].dropna().unique().tolist()
-        muni_list = ["All Municipalities"] + sorted(muni_filtered) if muni_filtered else ["All Municipalities"]
+        muni_filtered = (
+            df[df["City"] == input_city]["Municipality"].dropna().unique().tolist()
+        )
+        muni_list = (
+            ["All Municipalities"] + sorted(muni_filtered)
+            if muni_filtered
+            else ["All Municipalities"]
+        )
         input_muni = st.selectbox("Municipality", muni_list)
 
         if input_muni == "All Municipalities":
-            neighborhood_filtered = df[df["City"] == input_city]["Neighborhood"].dropna().value_counts().index.tolist()
+            neighborhood_filtered = (
+                df[df["City"] == input_city]["Neighborhood"]
+                .dropna()
+                .value_counts()
+                .index.tolist()
+            )
         else:
-            neighborhood_filtered = df[
-                (df["City"] == input_city) & (df["Municipality"] == input_muni)
-            ]["Neighborhood"].dropna().value_counts().index.tolist()
+            neighborhood_filtered = (
+                df[(df["City"] == input_city) & (df["Municipality"] == input_muni)][
+                    "Neighborhood"
+                ]
+                .dropna()
+                .value_counts()
+                .index.tolist()
+            )
 
-        neighborhood_list = ["All Neighborhoods"] + neighborhood_filtered[:40] if neighborhood_filtered else ["All Neighborhoods"]
+        neighborhood_list = (
+            ["All Neighborhoods"] + neighborhood_filtered[:40]
+            if neighborhood_filtered
+            else ["All Neighborhoods"]
+        )
         input_neighborhood = st.selectbox("Neighborhood", neighborhood_list)
 
         advertiser_options = sorted(df["Advertiser_Type"].dropna().unique().tolist())

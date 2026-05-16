@@ -198,7 +198,10 @@ def scrape_halooglasi(
     completed_urls = 0
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {executor.submit(scrape_page, url, headers, property_type): url for url in urls}
+        futures = {
+            executor.submit(scrape_page, url, headers, property_type): url
+            for url in urls
+        }
         for future in as_completed(futures):
             try:
                 for ad in future.result():

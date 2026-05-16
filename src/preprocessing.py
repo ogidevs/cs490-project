@@ -90,10 +90,7 @@ def parse_floor_numeric(val):
     }
 
     cleaned = (
-        val_str.replace("spratnost", "")
-        .replace("sprat", "")
-        .replace("/", " ")
-        .strip()
+        val_str.replace("spratnost", "").replace("sprat", "").replace("/", " ").strip()
     )
 
     numbers = re.findall(r"\d+(?:[\.,]\d+)?", cleaned)
@@ -111,7 +108,14 @@ def engineer_features(df):
     """Builds reusable features that can be reconstructed during prediction."""
     df = df.copy()
 
-    for column in ["City", "Municipality", "Neighborhood", "Advertiser_Type", "Property_Type", "Property_Subtype"]:
+    for column in [
+        "City",
+        "Municipality",
+        "Neighborhood",
+        "Advertiser_Type",
+        "Property_Type",
+        "Property_Subtype",
+    ]:
         if column not in df.columns:
             df[column] = "Unknown"
         df[column] = df[column].apply(_normalize_text)
@@ -138,7 +142,9 @@ def engineer_features(df):
         else:
             df["Current_Floor_Num"] = np.nan
     else:
-        df["Current_Floor_Num"] = pd.to_numeric(df["Current_Floor_Num"], errors="coerce")
+        df["Current_Floor_Num"] = pd.to_numeric(
+            df["Current_Floor_Num"], errors="coerce"
+        )
 
     if "Total_Floors_Num" not in df.columns:
         if "Total_Floors" in df.columns:
@@ -165,9 +171,11 @@ def engineer_features(df):
     df["Is_Top_Floor"] = (
         current_floor.notna() & total_floors.notna() & (current_floor >= total_floors)
     ).astype(int)
-    df["Is_Agency"] = df["Advertiser_Type"].str.contains(
-        r"agenc|agency|posrednik", case=False, na=False
-    ).astype(int)
+    df["Is_Agency"] = (
+        df["Advertiser_Type"]
+        .str.contains(r"agenc|agency|posrednik", case=False, na=False)
+        .astype(int)
+    )
 
     def _floor_bucket(row):
         floor = row["Current_Floor_Num"]
@@ -225,14 +233,14 @@ def load_and_clean_data(filepath):
     return df
 
 
-def prepare_data_for_training(df, target_col='Total_Price_EUR'):
+def prepare_data_for_training(df, target_col="Total_Price_EUR"):
     """Isolates the target variable and removes leakage columns derived from it."""
     df = df.dropna(subset=[target_col]).copy()
-    df = df.dropna(axis=1, how='all')
+    df = df.dropna(axis=1, how="all")
 
     leakage_columns = {
-        'Total_Price_EUR': 'Price_per_Unit_EUR',
-        'Price_per_Unit_EUR': 'Total_Price_EUR',
+        "Total_Price_EUR": "Price_per_Unit_EUR",
+        "Price_per_Unit_EUR": "Total_Price_EUR",
     }
     leakage_col = leakage_columns.get(target_col)
     if leakage_col in df.columns:
@@ -245,20 +253,37 @@ def prepare_data_for_training(df, target_col='Total_Price_EUR'):
 
 def get_preprocessor(X=None):
     """Builds a preprocessing pipeline for the engineered feature schema."""
-    num_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='median')),
-        ('scaler', StandardScaler())
-    ])
+    num_transformer = Pipeline(
+        steps=[
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", StandardScaler()),
+        ]
+    )
 
-    cat_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='constant', fill_value='Unknown')),
-        ('onehot', OneHotEncoder(handle_unknown='ignore', sparse_output=False, min_frequency=10))
-    ])
+    cat_transformer = Pipeline(
+        steps=[
+            ("imputer", SimpleImputer(strategy="constant", fill_value="Unknown")),
+            (
+                "onehot",
+                OneHotEncoder(
+                    handle_unknown="ignore", sparse_output=False, min_frequency=10
+                ),
+            ),
+        ]
+    )
 
-    return Pipeline(steps=[
-        ('feature_engineer', FeatureEngineer()),
-        ('column_transformer', ColumnTransformer(transformers=[
-            ('num', num_transformer, NUMERICAL_FEATURES),
-            ('cat', cat_transformer, CATEGORICAL_FEATURES),
-        ], remainder='drop')),
-    ])
+    return Pipeline(
+        steps=[
+            ("feature_engineer", FeatureEngineer()),
+            (
+                "column_transformer",
+                ColumnTransformer(
+                    transformers=[
+                        ("num", num_transformer, NUMERICAL_FEATURES),
+                        ("cat", cat_transformer, CATEGORICAL_FEATURES),
+                    ],
+                    remainder="drop",
+                ),
+            ),
+        ]
+    )
