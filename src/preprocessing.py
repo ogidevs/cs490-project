@@ -111,10 +111,10 @@ def parse_floor_numeric(val):
 
 def engineer_features(df):
     """Builds reusable features that can be reconstructed during prediction.
-    
+
     Supports property-type-specific feature engineering:
     - flat: All features including floor-based and room-based metrics
-    - house: Room-based features, no floor metrics  
+    - house: Room-based features, no floor metrics
     - land: Area-based features only
     - garage: Area-based features only
     """
@@ -181,7 +181,9 @@ def engineer_features(df):
             else:
                 df["Total_Floors_Num"] = np.nan
         else:
-            df["Total_Floors_Num"] = pd.to_numeric(df["Total_Floors_Num"], errors="coerce")
+            df["Total_Floors_Num"] = pd.to_numeric(
+                df["Total_Floors_Num"], errors="coerce"
+            )
     else:
         # For non-flat properties, ensure floor columns exist but are NaN
         if "Current_Floor_Num" not in df.columns:
@@ -190,8 +192,16 @@ def engineer_features(df):
             df["Total_Floors_Num"] = np.nan
 
     # Clean infinite values across all numeric series
-    current_floor = df["Current_Floor_Num"].replace([np.inf, -np.inf], np.nan) if "Current_Floor_Num" in df.columns else pd.Series(np.nan, index=df.index)
-    total_floors = df["Total_Floors_Num"].replace([np.inf, -np.inf], np.nan) if "Total_Floors_Num" in df.columns else pd.Series(np.nan, index=df.index)
+    current_floor = (
+        df["Current_Floor_Num"].replace([np.inf, -np.inf], np.nan)
+        if "Current_Floor_Num" in df.columns
+        else pd.Series(np.nan, index=df.index)
+    )
+    total_floors = (
+        df["Total_Floors_Num"].replace([np.inf, -np.inf], np.nan)
+        if "Total_Floors_Num" in df.columns
+        else pd.Series(np.nan, index=df.index)
+    )
     area = df["Area"].replace([np.inf, -np.inf], np.nan)
     rooms = df["Rooms_Numeric"].replace([np.inf, -np.inf], np.nan)
     photos = df["Photo_Count"].replace([np.inf, -np.inf], np.nan)
@@ -220,7 +230,9 @@ def engineer_features(df):
         df["Floor_Ratio"] = df["Floor_Ratio"].replace([np.inf, -np.inf], np.nan)
         df["Is_Ground_Floor"] = current_floor.le(0).fillna(False).astype(int)
         df["Is_Top_Floor"] = (
-            current_floor.notna() & total_floors.notna() & (current_floor >= total_floors)
+            current_floor.notna()
+            & total_floors.notna()
+            & (current_floor >= total_floors)
         ).astype(int)
 
         def _floor_bucket(row):
@@ -306,14 +318,14 @@ def prepare_data_for_training(df, target_col="Total_Price_EUR"):
 
 def get_preprocessor(X=None):
     """Builds a preprocessing pipeline for the engineered feature schema.
-    
+
     If X is provided and contains Property_Type, uses type-specific features.
     Otherwise defaults to flat (apartment) features.
     """
     # Detect property type from input data
     num_features = NUMERICAL_FEATURES
     cat_features = CATEGORICAL_FEATURES
-    
+
     if X is not None and not X.empty:
         if isinstance(X, pd.DataFrame) and "Property_Type" in X.columns:
             property_type = X["Property_Type"].iloc[0] if len(X) > 0 else "flat"
@@ -322,7 +334,7 @@ def get_preprocessor(X=None):
             if property_type in NUMERICAL_FEATURES_BY_TYPE:
                 num_features = NUMERICAL_FEATURES_BY_TYPE[property_type]
                 cat_features = CATEGORICAL_FEATURES_BY_TYPE[property_type]
-    
+
     num_transformer = Pipeline(
         steps=[
             ("imputer", SimpleImputer(strategy="median")),

@@ -90,7 +90,9 @@ def render_scraping_page(active_dataset_filename, active_data_path):
             st.write(f"Total properties: {len(df)}")
 
             if df.empty:
-                st.warning("Selected dataset is empty. Run scraping again to collect records.")
+                st.warning(
+                    "Selected dataset is empty. Run scraping again to collect records."
+                )
             else:
                 st.dataframe(df.astype(object).tail(10))
         else:

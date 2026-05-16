@@ -99,10 +99,14 @@ def train_and_evaluate(
             num_features = NUMERICAL_FEATURES
             cat_features = CATEGORICAL_FEATURES
             property_type = "flat"  # default
-            
+
             if "Property_Type" in X_train.columns and len(X_train) > 0:
                 from src.preprocessing import _normalize_text
-                from src.config import NUMERICAL_FEATURES_BY_TYPE, CATEGORICAL_FEATURES_BY_TYPE
+                from src.config import (
+                    NUMERICAL_FEATURES_BY_TYPE,
+                    CATEGORICAL_FEATURES_BY_TYPE,
+                )
+
                 property_type = _normalize_text(X_train["Property_Type"].iloc[0])
                 if property_type in NUMERICAL_FEATURES_BY_TYPE:
                     num_features = NUMERICAL_FEATURES_BY_TYPE[property_type]

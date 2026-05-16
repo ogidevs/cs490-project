@@ -238,7 +238,9 @@ def scrape_page_browser(
 
         # Headed mode is less likely to trigger anti-bot blocks on some sites.
         if playwright_headless is None:
-            headless_env = os.getenv("HALOOGLASI_PLAYWRIGHT_HEADLESS", "0").strip().lower()
+            headless_env = (
+                os.getenv("HALOOGLASI_PLAYWRIGHT_HEADLESS", "0").strip().lower()
+            )
             use_headless = headless_env in {"1", "true", "yes"}
         else:
             use_headless = bool(playwright_headless)
@@ -384,9 +386,7 @@ def scrape_halooglasi(
                         seen_ids.add(ad["ID"])
                         all_data.append(ad)
                 if result.get("error"):
-                    request_errors.append(
-                        f"{source_url} -> {result['error']}"
-                    )
+                    request_errors.append(f"{source_url} -> {result['error']}")
                 if result.get("status_code") == 403:
                     fallback_signal_detected = True
                 if result.get("error") and "anti-bot" in result["error"].lower():
@@ -400,7 +400,9 @@ def scrape_halooglasi(
 
     # Browser fallback only if the fast HTTP path is blocked.
     if len(all_data) == 0 and use_browser_fallback and fallback_signal_detected:
-        logging.info("No ads found with HTTP requests. Retrying with browser fallback...")
+        logging.info(
+            "No ads found with HTTP requests. Retrying with browser fallback..."
+        )
         browser_errors = []
         for idx, url in enumerate(urls, start=1):
             result = scrape_page_browser(
@@ -425,7 +427,11 @@ def scrape_halooglasi(
 
     if len(all_data) == 0:
         unique_errors = sorted(set(request_errors))
-        details = "\n".join(unique_errors[:5]) if unique_errors else "No response diagnostics available."
+        details = (
+            "\n".join(unique_errors[:5])
+            if unique_errors
+            else "No response diagnostics available."
+        )
         raise RuntimeError(
             "Scraping returned 0 ads. Possible anti-bot block or changed site structure. "
             "Try fewer pages, one city, or retry later.\n"
