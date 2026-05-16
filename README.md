@@ -69,3 +69,16 @@ uv run jupyter lab
 - **src/**: Contains core Python scripts for scraping, EDA, preprocessing, training, and predicting.
 - **app/**: Contains the Streamlit frontend.
 - **notebooks/**: Contains Jupyter notebooks for raw experimentation and Level 1 submissions.
+
+## Testing
+
+Run tests using tox:
+
+```bash
+uv run tox -e tests
+
+For more info refer to `README.md` in tests/ dir.
+```
+
+TODO:
+Extend the same engineered feature set to houses, land, and garages.
