@@ -8,15 +8,6 @@ Tests cover the following key functionalities:
 
 ### 1. **Preprocessing Tests** (`test_preprocessing.py`)
 
-**Parsing Rooms (`parse_room_numeric`)**
-
-- Standard room numbers (1-room, 2-room, etc.)
-- Half rooms (2.5-room, 3.5-room, etc.)
-- Studio and garsoniere
-- Numeric input (2.5, 1.5, etc.)
-- Missing values (NaN, empty string)
-- Different formats (uppercase, whitespace)
-
 **Parsing Floors (`parse_floor_numeric`)**
 
 - Ground floor, basement, high basement

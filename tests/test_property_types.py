@@ -26,7 +26,7 @@ class TestPropertyTypeFeatures:
                 "Property_Subtype": ["Apartment"],
                 "Area": [50.0],
                 "Photo_Count": [5],
-                "Rooms": ["dvosoban"],
+                "Rooms": [2.0],
                 "Current_Floor": ["2"],
                 "Total_Floors": ["5"],
             }
@@ -62,7 +62,7 @@ class TestPropertyTypeFeatures:
                 "Property_Subtype": ["Family Home"],
                 "Area": [100.0],
                 "Photo_Count": [5],
-                "Rooms": ["četiriosoban"],
+                "Rooms": [4.0],
                 "Current_Floor": ["0"],
                 "Total_Floors": ["2"],
             }
@@ -142,7 +142,6 @@ class TestPropertyTypeFeatures:
                 "Property_Subtype": ["Family Home"],
                 "Area": [100.0],
                 "Photo_Count": [5],
-                "Rooms": ["četiriosoban"],
                 "Rooms": [4.0],  # Directly provide parsed rooms
             }
         )
@@ -222,7 +221,7 @@ class TestPropertyTypeFeatures:
                 "Property_Subtype": ["Apartment"],
                 "Area": [50.0],
                 "Photo_Count": [5],
-                "Rooms": ["dvosoban"],
+                "Rooms": [2.0],
                 "Current_Floor": ["2"],
                 "Total_Floors": ["5"],
             }
@@ -263,7 +262,7 @@ class TestPropertyTypeFeatures:
                 "Advertiser_Type": ["Agency"],
                 "Area": [50.0],
                 "Photo_Count": [5],
-                "Rooms": ["dvosoban"],
+                "Rooms": [2.0],
             }
         )
 
@@ -284,7 +283,7 @@ class TestPropertyTypeFeatures:
                 "Advertiser_Type": ["Agency"],
                 "Area": [50.0],
                 "Photo_Count": [5],
-                "Rooms": ["dvosoban"],
+                "Rooms": [2.0],
                 "Current_Floor": ["2"],
                 "Total_Floors": ["5"],
             }
@@ -312,7 +311,7 @@ class TestPropertyTypeFeatures:
                 "Property_Subtype": ["Apartment"],
                 "Area": [75.0],
                 "Photo_Count": [8],
-                "Rooms": ["trosoban"],
+                "Rooms": [3.0],
                 "Current_Floor": ["3"],
                 "Total_Floors": ["7"],
             }
@@ -359,7 +358,7 @@ class TestPropertyTypeFeatures:
                 "Property_Subtype": ["Apartment", "Home"],
                 "Area": [50.0, 100.0],
                 "Photo_Count": [5, 3],
-                "Rooms": ["dvosoban", "četiriosoban"],
+                "Rooms": [2.0, 4.0],
                 "Current_Floor": ["2", "0"],
                 "Total_Floors": ["5", "2"],
             }

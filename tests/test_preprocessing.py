@@ -2,7 +2,6 @@ import pytest
 import pandas as pd
 import numpy as np
 from src.preprocessing import (
-    parse_room_numeric,
     parse_floor_numeric,
     engineer_features,
     load_and_clean_data,
@@ -10,46 +9,6 @@ from src.preprocessing import (
     get_preprocessor,
     _normalize_text,
 )
-
-
-class TestParseRoomNumeric:
-    """Tests parse_room_numeric() function."""
-
-    def test_parse_room_numeric_standard_rooms(self):
-        """Test parsing standard room numbers."""
-        assert parse_room_numeric("dvosoban") == 2.0
-        assert parse_room_numeric("trosoban") == 3.0
-        assert parse_room_numeric("četvorosoban") == 4.0
-        assert parse_room_numeric("petosoban") == 5.0
-
-    def test_parse_room_numeric_half_rooms(self):
-        """Test parsing half rooms."""
-        assert parse_room_numeric("dvoiposoban") == 2.5
-        assert parse_room_numeric("troiposoban") == 3.5
-        assert parse_room_numeric("jednoiposoban") == 1.5
-
-    def test_parse_room_numeric_studio_garsonjera(self):
-        """Test parsing studio and garsonjera."""
-        assert parse_room_numeric("studio") == 0.5
-        assert parse_room_numeric("garsonjera") == 0.5
-
-    def test_parse_room_numeric_numeric_input(self):
-        """Test parsing numeric input."""
-        assert parse_room_numeric("3") == 3.0
-        assert parse_room_numeric("2.5") == 2.5
-        assert parse_room_numeric("1,5") == 1.5
-
-    def test_parse_room_numeric_missing_values(self):
-        """Test parsing missing values."""
-        assert pd.isna(parse_room_numeric(np.nan))
-        assert pd.isna(parse_room_numeric(""))
-        assert pd.isna(parse_room_numeric(None))
-
-    def test_parse_room_numeric_uppercase(self):
-        """Test parsing with uppercase."""
-        assert parse_room_numeric("DVOSOBAN") == 2.0
-        assert parse_room_numeric("TROIPOSOBAN") == 3.5
-
 
 class TestParseFloorNumeric:
     """Tests parse_floor_numeric() function."""

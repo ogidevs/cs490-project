@@ -52,7 +52,7 @@ def render_training_page(active_dataset_filename):
             )
 
         st.write("---")
-        st.subheader("⚙️ Configure Hyperparameters")
+        st.subheader("Configure Hyperparameters")
 
         model_params = {}
         if selected_models:

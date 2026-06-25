@@ -28,7 +28,7 @@ A machine learning system that predicts real estate property prices in Serbia ba
 - **Multi-Model Training**: Supports 8+ ML algorithms with automatic best model selection
 - **Interactive UI**: Streamlit-based dashboard for data exploration, training, and predictions
 - **Reproducible Pipelines**: Scikit-Learn pipelines for consistent preprocessing and prediction
-- **Comprehensive Testing**: 74-test suite with 47% code coverage
+- **Comprehensive Testing**: 68-test suite with 47% code coverage
 
 ### Supported Property Types
 
@@ -76,7 +76,7 @@ project/
 │   ├── predict.py               # Prediction engine
 │   └── plotting.py              # Visualization functions
 │
-├── tests/                        # Comprehensive test suite (74 tests)
+├── tests/                        # Comprehensive test suite (68 tests)
 │   ├── conftest.py              # pytest fixtures
 │   ├── test_preprocessing.py    # Feature engineering tests (34)
 │   ├── test_training.py         # Training tests (7)
@@ -738,7 +738,7 @@ def predict_value(
 
 ### Test Suite Statistics
 
-**Total Tests**: 74 (all passing)
+**Total Tests**: 68 (all passing)
 
 - Coverage: 47% overall, 95% for critical modules
 

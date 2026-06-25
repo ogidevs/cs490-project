@@ -298,7 +298,7 @@ transition: slide-up
 <div class="flex flex-row gap-12 items-center">
   <div class="flex-1 w-1/3 flex flex-col items-center justify-center" v-click>
     <div class="relative flex items-center justify-center w-40 h-40 rounded-full bg-blue-900/20 border-[4px] border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.2)] mb-6">
-      <div class="text-6xl font-extrabold text-blue-400">74</div>
+      <div class="text-6xl font-extrabold text-blue-400">68</div>
     </div>
     <h3 class="text-xl font-bold text-gray-200 text-center mb-1">Automatizovana Testa</h3>
     <p class="text-sm text-gray-500 text-center">Pytest & Tox okruženje</p>

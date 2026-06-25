@@ -120,6 +120,8 @@ def engineer_features(df):
     # Parse rooms (available for flats and houses)
     if "Rooms" in df.columns:
         df["Rooms"] = pd.to_numeric(df["Rooms"], errors="coerce")
+    else:
+        df["Rooms"] = np.nan
 
     # Parse floor info (only relevant for flats)
     if property_type == "flat":
