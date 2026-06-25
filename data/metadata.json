@@ -1,19 +1,69 @@
 {
-    "dataset_1782049477": {
+    "dataset_1782421026": {
         "property_type": "flat",
         "cities": [
             "Beograd"
         ],
-        "records": 8409,
-        "scraped_at": "2026-06-21 15:44:37",
+        "records": 64,
+        "scraped_at": "2026-06-25 22:57:06"
+    },
+    "dataset_1782421264": {
+        "property_type": "flat",
+        "cities": [
+            "Beograd",
+            "Novi Sad"
+        ],
+        "records": 140,
+        "scraped_at": "2026-06-25 23:01:04"
+    },
+    "dataset_1782421349": {
+        "property_type": "flat",
+        "cities": [
+            "Beograd",
+            "Novi Sad"
+        ],
+        "records": 140,
+        "scraped_at": "2026-06-25 23:02:29"
+    },
+    "dataset_1782421443": {
+        "property_type": "flat",
+        "cities": [
+            "Beograd"
+        ],
+        "records": 68,
+        "scraped_at": "2026-06-25 23:04:03"
+    },
+    "dataset_1782421475": {
+        "property_type": "flat",
+        "cities": [
+            "Beograd"
+        ],
+        "records": 68,
+        "scraped_at": "2026-06-25 23:04:35"
+    },
+    "dataset_1782421543": {
+        "property_type": "flat",
+        "cities": [
+            "Beograd"
+        ],
+        "records": 68,
+        "scraped_at": "2026-06-25 23:05:43"
+    },
+    "dataset_1782421732": {
+        "property_type": "flat",
+        "cities": [
+            "Beograd"
+        ],
+        "records": 7982,
+        "scraped_at": "2026-06-25 23:08:52",
         "models": {
             "price": {
                 "best_model": "XGBoost",
-                "r2": 0.8681,
+                "r2": 0.8714,
                 "property_type": "flat",
                 "numerical_features": [
                     "Area",
-                    "Rooms_Numeric",
+                    "Rooms",
                     "Current_Floor_Num",
                     "Total_Floors_Num",
                     "Floor_Ratio",

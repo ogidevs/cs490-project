@@ -34,7 +34,7 @@ CITIES = {
 NUMERICAL_FEATURES_BY_TYPE = {
     "flat": [  # Apartments with floor info
         "Area",
-        "Rooms_Numeric",
+        "Rooms",
         "Current_Floor_Num",
         "Total_Floors_Num",
         "Floor_Ratio",
@@ -49,7 +49,7 @@ NUMERICAL_FEATURES_BY_TYPE = {
     ],
     "house": [  # Houses with potential rooms but single building
         "Area",
-        "Rooms_Numeric",
+        "Rooms",
         "Area_per_Room",
         "Rooms_per_100sqm",
         "Area_Log",

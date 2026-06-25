@@ -110,24 +110,24 @@ def parse_single_ad(ad, property_type="flat"):
                 if "kvadratura" in legend_text or "površina" in legend_text:
                     area = parse_area_value(val_text, property_type)
                 elif "soba" in legend_text:
-                    rooms = val_text
+                    rooms = float(val_text.split()[0].replace(",", "."))
                 elif "tip nekretnine" in legend_text:
                     property_subtype = val_text.strip()
                 elif "spratnost" in legend_text:
-                    # Logika za spratnost (npr. "3 / 5" ili "Prizemlje")
+                    val_text = val_text.lower().replace("spratnost", "").strip()
                     if "/" in val_text:
                         floor_parts = val_text.split("/")
                         current_floor = floor_parts[0].strip()
                         total_floors = floor_parts[1].strip()
                     else:
                         current_floor = val_text.strip()
+                        total_floors = current_floor
 
     advertiser = "Unknown"
     adv_span = ad.find("span", {"data-field-name": "oglasivac_nekretnine_s"})
     if adv_span and "data-field-value" in adv_span.attrs:
         advertiser = adv_span["data-field-value"].capitalize()
 
-    # 5. Broj fotografija
     photo_count = 0
     img_span = ad.find("span", class_="pi-img-count-num")
     if img_span:

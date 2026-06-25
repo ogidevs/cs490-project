@@ -22,43 +22,6 @@ def _normalize_text(val):
     text = re.sub(r"\s+", " ", str(val).strip())
     return text if text else "Unknown"
 
-
-def parse_room_numeric(val):
-    """Converts room descriptions like 'dvoiposoban' or '3.5' into a numeric value."""
-    if pd.isna(val) or str(val).strip() == "":
-        return np.nan
-
-    val_str = _normalize_text(val).lower()
-    room_terms = {
-        "garsonjera": 0.5,
-        "studio": 0.5,
-        "jednoiposoban": 1.5,
-        "1.5": 1.5,
-        "jednosoban": 1.0,
-        "1 soban": 1.0,
-        "dvosoban": 2.0,
-        "dvoiposoban": 2.5,
-        "trosoban": 3.0,
-        "troiposoban": 3.5,
-        "cetvorosoban": 4.0,
-        "četvorosoban": 4.0,
-        "petosoban": 5.0,
-        "vise soban": 5.0,
-        "višesoban": 5.0,
-        "visesoban": 5.0,
-    }
-
-    for term, value in room_terms.items():
-        if term in val_str:
-            return float(value)
-
-    match = re.search(r"(\d+(?:[\.,]\d+)?)", val_str)
-    if match:
-        return float(match.group(1).replace(",", "."))
-
-    return np.nan
-
-
 def parse_floor_numeric(val):
     """Converts floor labels into numeric values for both raw and cleaned inputs."""
     if pd.isna(val) or str(val).strip() == "":
@@ -155,13 +118,8 @@ def engineer_features(df):
     df["Photo_Count"] = pd.to_numeric(df["Photo_Count"], errors="coerce")
 
     # Parse rooms (available for flats and houses)
-    if "Rooms_Numeric" not in df.columns:
-        if "Rooms" in df.columns:
-            df["Rooms_Numeric"] = df["Rooms"].apply(parse_room_numeric)
-        else:
-            df["Rooms_Numeric"] = np.nan
-    else:
-        df["Rooms_Numeric"] = pd.to_numeric(df["Rooms_Numeric"], errors="coerce")
+    if "Rooms" in df.columns:
+        df["Rooms"] = pd.to_numeric(df["Rooms"], errors="coerce")
 
     # Parse floor info (only relevant for flats)
     if property_type == "flat":
@@ -203,7 +161,7 @@ def engineer_features(df):
         else pd.Series(np.nan, index=df.index)
     )
     area = df["Area"].replace([np.inf, -np.inf], np.nan)
-    rooms = df["Rooms_Numeric"].replace([np.inf, -np.inf], np.nan)
+    rooms = df["Rooms"].replace([np.inf, -np.inf], np.nan)
     photos = df["Photo_Count"].replace([np.inf, -np.inf], np.nan)
 
     # Area-based features (for all property types)

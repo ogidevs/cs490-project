@@ -75,9 +75,9 @@ def plot_advanced_features(df):
     """Groups categorical elements like Rooms and Municipalities to display their price impacts."""
     fig, axes = plt.subplots(1, 2, figsize=(16, 6))
 
-    if "Rooms_Numeric" in df.columns:
+    if "Rooms" in df.columns:
         df_viz = df.copy()
-        df_viz["Rooms_Cat"] = df_viz["Rooms_Numeric"].apply(
+        df_viz["Rooms_Cat"] = df_viz["Rooms"].apply(
             lambda x: "5+" if pd.notnull(x) and x >= 5 else str(x)
         )
         sns.violinplot(
@@ -114,38 +114,13 @@ def plot_advanced_features(df):
     plt.tight_layout()
     return fig
 
-
-def plot_floor_impact(df):
-    """Analyzes how the property's floor level impacts its value."""
-    fig, ax = plt.subplots(figsize=(10, 6))
-    if "Current_Floor_Num" in df.columns:
-        # Group floors to prevent clutter
-        df_viz = df.copy()
-        df_viz["Floor_Group"] = pd.cut(
-            df_viz["Current_Floor_Num"],
-            bins=[-2, 0, 3, 8, 100],
-            labels=["Basement/Ground", "Low (1-3)", "Mid (4-8)", "High (9+)"],
-        )
-        sns.barplot(
-            x="Floor_Group",
-            y="Price_per_Unit_EUR",
-            data=df_viz,
-            estimator=np.median,
-            errorbar=None,
-            palette="magma",
-            ax=ax,
-        )
-        ax.set_title("Median Price per m² based on Floor Level")
-    return fig
-
-
 def plot_correlation_matrix(df):
     """Calculates cross-vector tracking matrix indicating feature synergy."""
     num_cols = [
         "Total_Price_EUR",
         "Area",
         "Price_per_Unit_EUR",
-        "Rooms_Numeric",
+        "Rooms",
         "Current_Floor_Num",
         "Total_Floors_Num",
         "Photo_Count",

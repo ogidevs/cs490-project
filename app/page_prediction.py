@@ -171,7 +171,7 @@ def render_prediction_page(active_dataset_filename, active_data_path):
         }
 
         if input_rooms is not None:
-            input_data["Rooms_Numeric"] = input_rooms
+            input_data["Rooms"] = input_rooms
         if input_current_floor is not None:
             input_data["Current_Floor_Num"] = input_current_floor
         if input_total_floors is not None:

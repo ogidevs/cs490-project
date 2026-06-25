@@ -185,7 +185,7 @@ Example: dataset_flat_beograd-novi-sad_2026-05-16_14-30-45.csv
 ### Original Features (Raw Input)
 
 ```
-Numerical: Area, Photo_Count, Rooms_Numeric, Current_Floor_Num, Total_Floors_Num
+Numerical: Area, Photo_Count, Rooms, Current_Floor_Num, Total_Floors_Num
 Categorical: City, Municipality, Neighborhood, Advertiser_Type,
             Property_Type, Property_Subtype
 ```
@@ -674,7 +674,7 @@ def predict_value(
     "Property_Type": "flat",
     "Property_Subtype": "Apartment",
     "Area": 75.0,
-    "Rooms_Numeric": 2.0,
+    "Rooms": 2.0,
     "Current_Floor_Num": 3,
     "Total_Floors_Num": 5,
     "Photo_Count": 8,
@@ -685,7 +685,7 @@ def predict_value(
 **Required vs. Optional**:
 
 - Required: City, Municipality, Area, Property_Type
-- Type-specific: Rooms_Numeric (flats/houses), Floor info (flats only)
+- Type-specific: Rooms (flats/houses), Floor info (flats only)
 - Always included: Photo_Count, Advertiser_Type
 
 **Error Handling**:

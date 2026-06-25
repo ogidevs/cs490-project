@@ -143,7 +143,7 @@ class TestPropertyTypeFeatures:
                 "Area": [100.0],
                 "Photo_Count": [5],
                 "Rooms": ["četiriosoban"],
-                "Rooms_Numeric": [4.0],  # Directly provide parsed rooms
+                "Rooms": [4.0],  # Directly provide parsed rooms
             }
         )
 
@@ -324,7 +324,7 @@ class TestPropertyTypeFeatures:
         expected_features = [
             "Area",
             "Photo_Count",
-            "Rooms_Numeric",
+            "Rooms",
             "Current_Floor_Num",
             "Total_Floors_Num",
             "Floor_Ratio",
