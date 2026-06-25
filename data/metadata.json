@@ -86,6 +86,36 @@
                     "Floor_Category"
                 ],
                 "target_column": "Total_Price_EUR"
+            },
+            "price_per_m2": {
+                "best_model": "XGBoost",
+                "r2": 0.7349,
+                "property_type": "flat",
+                "numerical_features": [
+                    "Area",
+                    "Rooms",
+                    "Current_Floor_Num",
+                    "Total_Floors_Num",
+                    "Floor_Ratio",
+                    "Area_per_Room",
+                    "Rooms_per_100sqm",
+                    "Area_Log",
+                    "Photo_Count",
+                    "Photo_Count_Log",
+                    "Is_Ground_Floor",
+                    "Is_Top_Floor",
+                    "Is_Agency"
+                ],
+                "categorical_features": [
+                    "City",
+                    "Municipality",
+                    "Neighborhood",
+                    "Advertiser_Type",
+                    "Property_Type",
+                    "Property_Subtype",
+                    "Floor_Category"
+                ],
+                "target_column": "Price_per_Unit_EUR"
             }
         }
     }
